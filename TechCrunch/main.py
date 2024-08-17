@@ -4,46 +4,56 @@ from blackout import Blackout
 from tgi_friday import TGIFriday
 from event_manager import EventManager
 from company import Company
+from assignment import Assignment
+
+
+# class Tutorial:
+#     def __init__(self):
+#         self.cash = 10000  # Starting cash for the tutorial
+#         self.assignments = [
+#             Assignment("Coffee Supply", 100, 500, 5, 500, "Easy"),
+#             Assignment("New Laptops", 300, 3000, 10, 3000, "Medium"),
+#             Assignment("Office Renovation", 500, 5000, 15, 5000, "Hard")
+#         ]
+#     def start(self):
+#         self.learn_to_view_assignments()
+
+#     def learn_to_view_assignments(self):
+#         print("Welcome to the game tutorial!\n")
+#         print("You have 1 unread message.\n")
+#         input("Press Enter to view the message...")
+
+#         self.view_assignments()
+
+#         assignment_index = int(input("Select an assignment number to view its details: ")) - 1
+#         print(f"\nYou selected: {self.assignments[assignment_index].name}\n")
+
+#         view_details = input("Would you like to view the assignment details? (yes/no):\n ").strip().lower()
+#         if view_details == 'yes':
+#             self.view_assignment_details(assignment_index)
+#             print("Good. Now let's learn to select an assignment. \n")
+#         else:
+#             print("You chose not to view the assignment details.\n")
+
+#     def view_assignments(self):
+#         print("Here are the available assignments:")
+#         for i, assignment in enumerate(self.assignments, start=1):
+#             print(f"{i}.")
+#             assignment.print_assignment_name()
+#             assignment.print_attributes()
+#         print("\n")
+
+#     def view_assignment_details(self, index):
+#         if 0 <= index < len(self.assignments):
+#             assignment = self.assignments[index]
+#             assignment.print_description()
+#         else:
+#             print("Invalid assignment selected.\n")
+
+
 
 def main():
-    # Create an event manager
-    event_manager = EventManager()
-
-    # Populate event manager with events
-    event1 = CompanyRiot("A riot broke out among employees.")
-    event2 = Blackout("The office lost power for several hours.")
-    event3 = TGIFriday("An unexpected company-wide celebration event.")
-
-    event_manager.add_event("riot", event1)
-    event_manager.add_event("blackout", event2)
-    event_manager.add_event("celebration", event3)
-
-    # Create and initialize a company object
-    company = Company(overall_funding=100000, employee_count=50)
-
-    # Example game loop (simple simulation)
-    running = True
-    while running:
-        print("\n--- Main Game Loop ---")
-        print("1. Perform all tasks")
-        print("2. Perform a specific task")
-        print("3. Show company status")
-        print("4. Exit")
-
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            event_manager.perform_all_tasks()
-        elif choice == "2":
-            task_name = input("Enter the task name (e.g., 'blackout'): ")
-            event_manager.perform_task(task_name)
-        elif choice == "3":
-            print(f"Company Status:\nFunding: ${company.overall_funding}\nEmployees: {company.employee_count}")
-        elif choice == "4":
-            print("Exiting game...")
-            running = False
-        else:
-            print("Invalid choice. Please try again.")
-
+    company = Company(5000,4)
+    
 if __name__ == "__main__":
     main()
