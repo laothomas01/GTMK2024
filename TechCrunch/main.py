@@ -279,13 +279,22 @@ from company import Company
 
 def main():
     company = Company(300,3)
-    company.print_available_jobs()
-    company.print_available_job("Job A")
-    company.add_selected_job("Job A")
-    print(company.get_selected_jobs_size())
-    company.print_selected_jobs()
-    company.remove_selected_job("Job A")
-    print(company.get_selected_jobs_size())
+    company.check_company_status()
+    company.print_company_status_report()
+    # company.print_available_jobs()
+    # company.print_available_job("Job A")
+    # company.add_selected_job("Job A")
+    # print(company.get_selected_jobs_size())
+    # company.print_selected_jobs()
+    # company.remove_selected_job("Job A")
+    # print(company.get_selected_jobs_size())
+    # company.add_selected_job("Job A")
+    # print(company.get_selected_jobs_size())
+    # company.update_selected_job_progress("Job A",10)
+    # company.update_selected_assigned_employee_count("Job A",10)
+    # company.print_selected_jobs()
+    
+    
 
 if __name__ == "__main__":
     main()

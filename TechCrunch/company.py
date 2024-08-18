@@ -4,36 +4,49 @@ class Company:
     def __init__(self,starting_funds,starting_employee_count):
         self.current_funds = starting_funds
         self.current_available_employee_count = starting_employee_count
+        self.completed_jobs = 0
         self.selected_jobs = []
         self.available_jobs = {
                 "Job A": {
                     "name": "Job A",
-                    "cost": 20,
+                    "cost": 10,
                     "progress": 0,
-                    "max_progress": 3,
-                    "assigned_employees": 0,
-                    "deadline": 5,
+                    "max_progress": 2,
+                    "assigned_employee_count": 0,
+                    "deadline": 4,
+                    "reward" : 50,
                     "difficulty": "Easy"
                 }
                 ,
                 "Job B": {
                     "name": "Job B",
-                    "cost": 40,
+                    "cost": 20,
+                    "progress": 0,
+                    "max_progress": 4,
+                    "assigned_employee_count": 0,
+                    "deadline": 8,
+                    "reward" : 100,
+                    "difficulty": "Medium"
+                    },
+                "Job C": {
+                    "name": "Job C",
+                    "cost": 30,
                     "progress": 0,
                     "max_progress": 6,
-                    "assigned_employees": 0,
-                    "deadline": 10,
-                    "difficulty": "Medium"
+                    "assigned_employee_count": 0,
+                    "deadline": 12,
+                    "reward" : 200,
+                    "difficulty": "Hard"
                     }
         }
-        
+    
     def print_available_jobs(self):
         for job_name, job_details in self.available_jobs.items():
             print(f"Job Name: {job_name}")
             for key, value in job_details.items():
                 print(f"  {key}: {value}")
             print()  # Adds a blank line between jobs
-
+    
     def print_available_job(self, job_name):
         if job_name in self.available_jobs:
             job_details = self.available_jobs[job_name]
@@ -72,14 +85,82 @@ class Company:
         else:
              print("No jobs have been selected yet.")
 
-    def update_selected_job_progress(self,job_name,progress_amount):
+    def update_selected_job_progress(self, job_name, progress_amount):
+        for job in self.selected_jobs:
+            if job['name'] == job_name:
+                # Update the 'progress' key in the job dictionary
+                job['progress'] += progress_amount
+                
+                # Ensure the progress does not exceed max progress
+                if job['progress'] > job['max_progress']:
+                    job['progress'] = job['max_progress']
+                
+                print(f"Updated progress for {job_name} to {job['progress']}.")
+                return
+        print(f"Job '{job_name}' not found in selected jobs.")
+    
+    def update_selected_assigned_employee_count(self, job_name, assigned_employee_count):
+        for job in self.selected_jobs:
+            if job['name'] == job_name:
+                # Update the 'progress' key in the job dictionary
+                job['assigned_employee_count'] += assigned_employee_count
+                
+                print(f"Updated assigned_employee_count for {job_name} to {job['assigned_employee_count']}.")
+                return
+        print(f"Job '{job_name}' not found in selected jobs.")
+
+    def update_selected_job_deadline(self,job_name,deadline_update_amount):
+        for job in self.selected_jobs:
+            if job['name'] == job_name:
+                job['deadline'] -= deadline_update_amount
+
+                if job['deadline'] <= 0:
+                    job['deadline'] = 0
+                
+
+    
+    
+    def increase_current_funds(self,amount):
+        self.current_funds += amount
+
+    def decrease_current_funds(self,amount):
+        self.current_funds -= amount 
+    
+    def update_current_funds(self,amount):
+        self.current_funds = amount 
+    
+    def check_company_status(self):
         if self.selected_jobs:
             for job in self.selected_jobs:
-                if job['name'] == job_name:
-                    self.selected_jobs['progress'] += progress_amount
-       
-    
-    
+                if job['assigned_employee_count']:
+                    self.update_selected_job_progress(job['name'],job['assigned_employee_count'])
+                if job['progress'] >= job['max_progress']:
+                    self.increase_current_funds(job['reward'])
+                    self.completed_jobs += 1
+                    self.remove_selected_job(job['name'])
+                else:
+                    # will need to replace this magic number 
+                    self.update_selected_job_deadline(job['name'],1)
+                if job['deadline'] <= 0:
+                    print(f"Job '{job_name}' has missed the deadline")
+    def print_company_status_report(self):
+        if not self.selected_jobs:
+            print('Nothing to report')
+        else:
+                    # Print current funds
+            print(f"Current Funds: {self.current_funds}")
+
+            # Print current available employee count
+            print(f"Current Available Employee Count: {self.current_available_employee_count}")
+
+            # Print total number of jobs completed
+            print(f"Total Number of Jobs Completed: {self.completed_jobs}")
+
+            # Print the details of selected jobs
+            self.print_selected_jobs()
+        
+
+
      # for job_name, job_details in self.selec_jobs.items():
         #     print(f"Job Name: {job_name}")
         #     for key, value in job_details.items():
