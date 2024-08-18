@@ -277,33 +277,29 @@
         
 from company import Company 
 
-def main():
-    company = Company(300,3)
-    company.add_selected_job("Job A")
-    company.update_selected_assigned_employee_count("Job A",-1)
-    company.check_company_status()
-    company.check_company_status()
-    company.check_company_status()
-    company.check_company_status()
-    company.check_company_status()
-    company.check_company_status()
-    company.print_status_report()
-    # company.print_company_status_report()
+class Game:
+    def __init__(self):
+        self.company = None
+    def greet_player(self):
+        print("Welcome to CEO Simulator 2024!")
+        print("It's your first day as CEO, and the company is looking forward to working with you.")
+    def start(self):
+        self.greet_player()
+        self.company = Company(300,3)
+        self.company.add_selected_job("Job A")
+        self.company.check_company_status()
+        self.company.print_status_report()
+        run = True
+        while run:
+            pass
 
-    # company.print_company_status_report()
-    # company.print_available_jobs()
-    # company.print_available_job("Job A")
-    # company.add_selected_job("Job A")
-    # print(company.get_selected_jobs_size())
-    # company.print_selected_jobs()
-    # company.remove_selected_job("Job A")
-    # print(company.get_selected_jobs_size())
-    # company.add_selected_job("Job A")
-    # print(company.get_selected_jobs_size())
-    # company.update_selected_job_progress("Job A",10)
-    # company.update_selected_assigned_employee_count("Job A",10)
-    # company.print_selected_jobs()
+        # while run:
+        #     pass
     
+
+def main():
+    game = Game()
+    game.start()
     
 
 if __name__ == "__main__":
