@@ -279,8 +279,18 @@ from company import Company
 
 def main():
     company = Company(300,3)
+    company.add_selected_job("Job A")
+    company.update_selected_assigned_employee_count("Job A",-1)
     company.check_company_status()
-    company.print_company_status_report()
+    company.check_company_status()
+    company.check_company_status()
+    company.check_company_status()
+    company.check_company_status()
+    company.check_company_status()
+    company.print_status_report()
+    # company.print_company_status_report()
+
+    # company.print_company_status_report()
     # company.print_available_jobs()
     # company.print_available_job("Job A")
     # company.add_selected_job("Job A")

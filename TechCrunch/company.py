@@ -3,8 +3,10 @@
 class Company:
     def __init__(self,starting_funds,starting_employee_count):
         self.current_funds = starting_funds
-        self.current_available_employee_count = starting_employee_count
+        self.max_employee_count = starting_employee_count
+        self.current_available_employee_count = self.max_employee_count
         self.completed_jobs = 0
+        self.failed_jobs = 0
         self.selected_jobs = []
         self.available_jobs = {
                 "Job A": {
@@ -102,8 +104,14 @@ class Company:
     def update_selected_assigned_employee_count(self, job_name, assigned_employee_count):
         for job in self.selected_jobs:
             if job['name'] == job_name:
-                # Update the 'progress' key in the job dictionary
-                job['assigned_employee_count'] += assigned_employee_count
+                # # Update the 'progress' key in the job dictionary
+                if assigned_employee_count >= self.current_available_employee_count:
+                    assigned_employee_count = self.current_available_employee_count
+                    job['assigned_employee_count'] += assigned_employee_count
+                    self.decrease_max_employee_count(assigned_employee_count)
+                elif assigned_employee_count > 0:
+                     job['assigned_employee_count'] += assigned_employee_count
+                     self.decrease_available_employee_count(assigned_employee_count)
                 
                 print(f"Updated assigned_employee_count for {job_name} to {job['assigned_employee_count']}.")
                 return
@@ -117,8 +125,19 @@ class Company:
                 if job['deadline'] <= 0:
                     job['deadline'] = 0
                 
-
+    def increase_max_employee_count(self,amount):
+        self.max_employee_count += amount 
+    def increase_available_employee_count(self,amount):
+        self.current_available_employee_count += amount 
+    def decrease_max_employee_count(self,amount):
+        self.max_employee_count -= amount 
+    def decrease_available_employee_count(self,amount):
+        self.current_available_employee_count += amount 
     
+    def get_max_employee_count(self):
+        return self.max_employee_count
+    def get_current_employee_count(self):
+        return self.current_available_employee_count
     
     def increase_current_funds(self,amount):
         self.current_funds += amount
@@ -135,6 +154,7 @@ class Company:
                 if job['assigned_employee_count']:
                     self.update_selected_job_progress(job['name'],job['assigned_employee_count'])
                 if job['progress'] >= job['max_progress']:
+                    self.increase_available_employee_count(job['assigned_employee_count'])
                     self.increase_current_funds(job['reward'])
                     self.completed_jobs += 1
                     self.remove_selected_job(job['name'])
@@ -142,22 +162,28 @@ class Company:
                     # will need to replace this magic number 
                     self.update_selected_job_deadline(job['name'],1)
                 if job['deadline'] <= 0:
-                    print(f"Job '{job_name}' has missed the deadline")
-    def print_company_status_report(self):
-        if not self.selected_jobs:
-            print('Nothing to report')
+                    print(f"Job '{job['name']}' has missed the deadline")
+                    self.failed_jobs += 1
+                    self.remove_selected_job(job['name'])
         else:
-                    # Print current funds
-            print(f"Current Funds: {self.current_funds}")
+            print('Nothing to report')
+    def print_status_report(self):
+            
+            # Print current funds
+            print(f"Current Funds: ${self.current_funds}")
+
+            print(f"Current Employee Count: {self.max_employee_count}")
 
             # Print current available employee count
             print(f"Current Available Employee Count: {self.current_available_employee_count}")
 
             # Print total number of jobs completed
             print(f"Total Number of Jobs Completed: {self.completed_jobs}")
-
-            # Print the details of selected jobs
-            self.print_selected_jobs()
+            print(f"Total Number of Jobs Failed: {self.failed_jobs}")
+            if len(self.selected_jobs):
+                self.print_selected_jobs()
+            else:
+                print("No jobs currently selected")
         
 
 
