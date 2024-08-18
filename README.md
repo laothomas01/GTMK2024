@@ -15,3 +15,5 @@ To run this project, follow these steps:
 cd your-repo-name
 3. **Run the project**
   python main.py
+Feature List
+https://www.notion.so/GTMK-2024-Features-842fbdc17a6945a9a54586db55c32fc1?pvs=4
