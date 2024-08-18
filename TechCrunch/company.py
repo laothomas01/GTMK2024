@@ -1,5 +1,5 @@
 # # from assignment import Assignment
-
+import random 
 class Company:
     def __init__(self,starting_funds,starting_employee_count):
         self.current_funds = starting_funds
@@ -9,54 +9,92 @@ class Company:
         self.failed_jobs = 0
         self.selected_jobs = []
         # will probably have to append these jobs from somewhere else 
-        self.available_jobs = {
-                "Job A": {
-                    "name": "Job A",
-                    "cost": 10,
-                    "progress": 0,
-                    "max_progress": 2,
-                    "assigned_employee_count": 0,
-                    "deadline": 4,
-                    "reward" : 50,
-                    "difficulty": "Easy",
-                    "is_available:" : 1
-                }
-                ,
-                "Job B": {
-                    "name": "Job B",
-                    "cost": 20,
-                    "progress": 0,
-                    "max_progress": 4,
-                    "assigned_employee_count": 0,
-                    "deadline": 8,
-                    "reward" : 100,
-                    "difficulty": "Medium",
-                    "is_available:" :1
+        self.print_available_jobs = {}
+        self.available_jobs = {}
+        # self.available_jobs = {
+        #         "Job A": {
+        #             "name": "Job A",
+        #             "cost": 10,
+        #             "progress": 0,
+        #             "max_progress": 2,
+        #             "assigned_employee_count": 0,
+        #             "deadline": 4,
+        #             "reward" : 50,
+        #             "difficulty": "Easy",
+        #             "is_available:" : 1
+        #         }
+        #         ,
+        #         "Job B": {
+        #             "name": "Job B",
+        #             "cost": 20,
+        #             "progress": 0,
+        #             "max_progress": 4,
+        #             "assigned_employee_count": 0,
+        #             "deadline": 8,
+        #             "reward" : 100,
+        #             "difficulty": "Medium",
+        #             "is_available:" :1
 
-                    },
-                "Job C": {
-                    "name": "Job C",
-                    "cost": 30,
-                    "progress": 0,
-                    "max_progress": 6,
-                    "assigned_employee_count": 0,
-                    "deadline": 12,
-                    "reward" : 200,
-                    "difficulty": "Hard",
-                    "is_available:" : 1
-                    }
-        }
+        #             },
+        #         "Job C": {
+        #             "name": "Job C",
+        #             "cost": 30,
+        #             "progress": 0,
+        #             "max_progress": 6,
+        #             "assigned_employee_count": 0,
+        #             "deadline": 12,
+        #             "reward" : 200,
+        #             "difficulty": "Hard",
+        #             "is_available:" : 1
+        #             }
+        # }
     # def remove_available_job(self,job_name):
     #     if job_name in self.available_jobs:
     #         self.available_jobs[job_name]['is_available'] = 1
-    def print_available_jobs(self):
-        for job_name, job_details in self.available_jobs.items():
-            if self.available_jobs[job_name]['is_available']:
+
+    def display_random_jobs(self, count=3):
+        """Select and display a specified number of random jobs from available jobs."""
+        if not self.available_jobs:
+            print("No available jobs to display.")
+            return
+        
+        # Get a list of job names
+        job_names = list(self.available_jobs.keys())
+        
+        # Ensure there are enough jobs to sample
+        if len(job_names) < count:
+            count = len(job_names)
+        
+        # Select random job names
+        selected_jobs = random.sample(job_names, count)
+        
+        # Display details for each selected job
+        print(f"Displaying {count} random available jobs:")
+        for job_name in selected_jobs:
+            self.print_available_job(job_name)
+            print()  # Adds a blank line between jobs
+
+    def populate_available_jobs(self):
+        for i in range(1,300):
+            job_name = f"Job {chr(65 + (i // 26))}{chr(65 + (i % 26))}"
+            self.available_jobs[job_name] = {
+                "name": job_name,
+                "cost": 10 + (i % 5) * 10,
+                "progress": 0,
+                "max_progress": 2 + (i % 5) * 2,
+                "assigned_employee_count": 0,
+                "deadline": 4 + (i % 5) * 4,
+                "reward": 50 + (i % 5) * 50,
+                "difficulty": ["Easy", "Medium", "Hard"][(i % 3)],
+                "is_available": 1
+            }
+
+    def display_available_jobs(self):
+         for job_name, job_details in self.available_jobs.items():
                 print(f"Job Name: {job_name}")
                 for key, value in job_details.items():
                     print(f"  {key}: {value}")
                 print()  # Adds a blank line between jobs
-            
     
     def print_available_job(self, job_name):
         if job_name in self.available_jobs:
@@ -191,7 +229,7 @@ class Company:
             # Print current funds
             print(f"Current Funds: ${self.current_funds}")
 
-            print(f"Current Employee Count: {self.max_employee_count}")
+            print(f"Current Max Employee Count: {self.max_employee_count}")
 
             # Print current available employee count
             print(f"Current Available Employee Count: {self.current_available_employee_count}")
