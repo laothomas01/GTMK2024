@@ -1,9 +1,77 @@
 import shutil
 from company import Company
+import sys
+"""
+Features list:
+[] event manager
+[] assign employees to job
+[] add check for how player loses 
+[] tutorial section
+[] update job names(game polishing)
+[] connect events with how they affect the company
+[] make sure core gameplay is down before any extra feature is created <--------
+    [] make sure backend functionality function with front end 
+[] add more interactable options 
+[] allow the game to scale based on increasing difficulty
+[] make sure the game progresses in difficulty
+[] should there be an energy system? 
+[] action pointer/energy system can add complexity to this game 
+[] allow player to customize their name
+[] should employees cost money? 
+
+"""
+import sys
+import shutil
 
 class Game:
     def __init__(self):
         self.company = None
+
+    def test_company_api(self):
+        # Initialize company
+        company = Company(starting_funds=1000, starting_employee_count=10)
+        
+        # Populate available jobs
+        company.populate_available_jobs()
+        
+        # Display and select easy jobs
+        easy_jobs = company.find_easy_jobs()
+        print("Easy Jobs Available:")
+        for i, job in enumerate(easy_jobs, 1):
+            print(f"{i}. {job}")
+        selected_easy_jobs = [easy_jobs[int(input("Select an easy job by number: ")) - 1]]
+        
+        # Display and select medium jobs
+        medium_jobs = company.find_medium_jobs()
+        print("Medium Jobs Available:")
+        for i, job in enumerate(medium_jobs, 1):
+            print(f"{i}. {job}")
+        selected_medium_jobs = [medium_jobs[int(input("Select a medium job by number: ")) - 1]]
+        
+        # Display and select hard jobs
+        hard_jobs = company.find_hard_jobs()
+        print("Hard Jobs Available:")
+        for i, job in enumerate(hard_jobs, 1):
+            print(f"{i}. {job}")
+        selected_hard_jobs = [hard_jobs[int(input("Select a hard job by number: ")) - 1]]
+        
+        # Assign workers to selected jobs
+        worker_count = int(input("Enter number of workers to assign to each selected job: "))
+        
+        for job_name in selected_easy_jobs + selected_medium_jobs + selected_hard_jobs:
+            cost_per_worker = company.get_cost_per_worker(job_name)
+            if cost_per_worker:
+                company.assign_workers_to_job(job_name, worker_count)
+        
+        # Display queued jobs
+        company.display_queued_jobs()
+        
+        # Call check company status
+        company.check_company_status()
+        
+        # Print status
+        company.print_status_report()
+
 
     def greet_player(self):
         console_width = shutil.get_terminal_size().columns
@@ -18,56 +86,57 @@ class Game:
         return text.center(console_width)
     
     def start(self):
-        self.greet_player()
-        self.company = Company(300, 3)
-        self.company.populate_available_jobs()
-        
-        run = True
-        
+        run = True 
         while run:
-            # Display current status
-            # Display available jobs
-              
-            # self.print_centered("Available Jobs:")
-            # self.company.display_random_jobs(count=3)
-            # print()
-            
-            # Display dialog message
-            print(self.print_centered("You have unread messages. Press Enter to view them."))
-            user_input = input()
-            if user_input == "":
-                # Call the display_random_jobs function again or perform another action
-                self.print_centered("Displaying more random available jobs:")
-                self.company.display_random_jobs(count=3)
-                print()
-                
-                # Get player input
-                action = input(self.print_centered("Choose an action:\n(1) Select a job\n(2) Hire more employees\n(3) View Selected Jobs\n(4) Do Nothing\n(5) Exit Game\n"))
-
-                if action == "1":
-                    job_name = input(self.print_centered("Enter the name of the job to select: "))
-                    self.company.add_selected_job(job_name)
-                elif action == "2":
-                    number_of_employees = int(input(self.print_centered("Enter the number of employees to hire: ")))
-                    self.company.increase_available_employee_count(number_of_employees)
-                    self.print_centered(f"Hired {number_of_employees} new employees.")
-                elif action == "3":
-                    self.company.print_selected_jobs()
-                elif action == "4":
-                    self.print_centered("Doing nothing...")
-                elif action == "5":
-                    run = False
-                    self.print_centered("Thank you for playing CEO Simulator 2024! Goodbye!")
+            self.greet_player()
+            self.company = Company(300,3)
+            self.company.populate_available_jobs()
+            press_start = False 
+            begin_game = False 
+            while not press_start:
+                print(self.print_centered("You have unread messages. Press Enter to view them or Q to quit"))
+                user_input = input()
+                if user_input.lower() == "q":
+                    print(self.print_centered("Thank you for playing CEO Simulator 2024! Goodbye!"))
+                    sys.exit()
+                elif user_input == "":
+                    begin_game = True 
+                    press_start = True 
                 else:
-                    self.print_centered("Invalid action. Please choose again.")
-            else:
-                print('You have unread messages. Press Enter to view them.')
-
-
+                    print(self.print_centered("Invalid Input"))
+            while begin_game:
+                # Handle game logic here 
+                        
+                if self.company.dead:
+                    print("You are dead")
+                    begin_game = False 
+            
+            
+            
+            print(self.print_centered("Would you like to restart? (Y/N)"))
+            restart_input = input().lower()
+            restarting = True 
+            while restarting:
+                if restart_input == "n":
+                    print(self.print_centered("Thank you for playing CEO Simulator 2024! Goodbye!"))
+                    run = False
+                    restarting = False 
+                elif restart_input == "y":
+                    press_start = False 
+                    begin_game = False 
+                    restarting = False 
+                else:
+                    print(self.print_centered("Invalid Input"))
+        sys.exit()
         
 def main():
+    # Instantiate and start the game
     game = Game()
-    game.start()
+    game.test_company_api()
+
+    # game.start()
+    
+
     
 if __name__ == "__main__":
     main()
