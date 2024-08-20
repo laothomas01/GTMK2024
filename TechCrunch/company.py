@@ -1384,7 +1384,7 @@ from tabulate import tabulate
 class Company:
     def __init__(self, starting_funds, starting_employee_count,max_population):
         self.current_funds = starting_funds
-        self.max_employee_population = max_population
+        # self.max_employee_population = max_population
         self.current_available_employee_count = starting_employee_count
         self.completed_jobs = 0
         self.failed_jobs = 0
@@ -1393,9 +1393,334 @@ class Company:
         self.dead = False
         self.expansion_level = 1  # Tracks the company's expansion level
         self.expansion_cost = 500  # Base cost for expanding the company
+ # Space-related job names
+        self.easy_jobs = [
+        "Space Janitor",
+        "Launch Pad Technician",
+        "Satellite Maintenance Assistant",
+        "Spacecraft Cleaning Specialist",
+        "Mission Control Support",
+        "Astronaut Aide",
+        "Space Supply Coordinator",
+        "Space Station Cook",
+        "Space Shuttle Ground Crew",
+        "Telescope Operator",
+        "Flight Log Assistant",
+        "Orbital Logistics Clerk",
+        "Space Research Intern",
+        "Habitat Maintenance Worker",
+        "Space Inventory Clerk",
+        "Space Shuttle Refueling Technician",
+        "Spacecraft Systems Tester",
+        "Space Mission Scheduler",
+        "Spacecraft Docking Assistant",
+        "Space Communications Liaison",
+        "Astronaut Equipment Assistant",
+        "Space Station Maintenance Worker",
+        "Spacecraft Storage Specialist",
+        "Satellite Calibration Technician",
+        "Mission Planning Assistant",
+        "Spacecraft Assembly Helper",
+        "Rocket Launch Coordinator",
+        "Orbital Station Clerk",
+        "Spacecraft Inspection Assistant",
+        "Telescope Maintenance Worker",
+        "Spacecraft Refurbishment Specialist",
+        "Space Operations Assistant",
+        "Space Research Coordinator",
+        "Astronaut Supplies Manager",
+        "Spacecraft Inventory Supervisor",
+        "Launch Vehicle Technician",
+        "Space Station Hygiene Officer",
+        "Orbital Cargo Handler",
+        "Space Shuttle Preflight Inspector",
+        "Satellite Monitoring Technician",
+        "Space Expedition Support",
+        "Astronaut Training Assistant",
+        "Space Shuttle Cleanup Crew",
+        "Spacecraft Component Tester",
+        "Space Mission Inventory Clerk",
+        "Orbital Research Assistant",
+        "Spacecraft Ground Support",
+        "Space Station Log Keeper",
+        "Spacecraft Operations Assistant",
+        "Satellite Repair Specialist",
+        "Space Shuttle Ground Technician",
+        "Space Exploration Assistant",
+        "Orbital Habitation Technician",
+        "Spacecraft Safety Inspector",
+        "Mission Control Assistant",
+        "Space Station Equipment Operator",
+        "Spacecraft Calibration Specialist",
+        "Launch Pad Maintenance Worker",
+        "Space Shuttle Maintenance Crew",
+        "Astronaut Health Aide",
+        "Space Station Resource Manager",
+        "Orbital Systems Tester",
+        "Spacecraft Operation Support",
+        "Satellite Launch Assistant",
+        "Space Mission Prep Assistant",
+        "Spacecraft Communication Technician",
+        "Space Research Aide",
+        "Orbital Station Technician",
+        "Space Shuttle Refurbishment Crew",
+        "Astronaut Gear Technician",
+        "Spacecraft Refueling Assistant",
+        "Space Exploration Assistant",
+        "Mission Log Keeper",
+        "Space Station Ground Crew",
+        "Space Shuttle Operations Assistant",
+        "Spacecraft System Maintainer",
+        "Space Mission Inventory Manager",
+        "Orbital Maintenance Specialist",
+        "Satellite Calibration Assistant",
+        "Space Shuttle Mission Support",
+        "Spacecraft Logistics Coordinator",
+        "Astronaut Equipment Specialist",
+        "Space Station Hygiene Technician",
+        "Space Shuttle Refueling Crew",
+        "Spacecraft Assembly Coordinator",
+        "Space Mission Equipment Technician",
+        "Orbital Launch Assistant",
+        "Space Research Technician",
+        "Space Station Operations Specialist",
+        "Satellite Deployment Assistant",
+        "Spacecraft Inspection Supervisor",
+        "Space Shuttle Inspection Crew",
+        "Orbital Station Ground Support",
+        "Space Exploration Log Keeper",
+        "Spacecraft Equipment Coordinator",
+        "Mission Control Support Staff",
+        "Space Shuttle System Technician",
+        "Space Station Equipment Specialist",
+        "Astronaut Training Coordinator",
+        "Spacecraft Maintenance Helper",
+        "Space Mission Refueling Technician",
+        "Orbital Resource Manager",
+        "Space Shuttle Mission Technician",
+        "Space Station Log Specialist",
+        "Satellite Operation Assistant",
+        "Spacecraft Operations Coordinator",
+        "Space Exploration Technician",
+        "Orbital Maintenance Coordinator",
+        "Space Shuttle Ground Support",
+        "Space Mission Logistics Assistant",
+        "Spacecraft Repair Technician",
+        "Astronaut Systems Aide",
+        "Space Station Cleaning Crew",
+        "Spacecraft Docking Specialist",
+        "Mission Control Systems Assistant",
+        "Space Shuttle Maintenance Technician",
+        "Space Exploration Maintenance",
+        "Orbital Operations Specialist",
+        "Spacecraft Preflight Coordinator",
+        "Space Shuttle Refueling Supervisor",
+        "Space Mission Calibration Technician",
+        "Astronaut Equipment Coordinator",
+        "Space Station Logistics Supervisor",
+        "Spacecraft Systems Support",
+        "Orbital Launch Technician",
+        "Space Shuttle Operations Coordinator",
+        "Space Research Logistics Manager"
+    ]
+
+
+        self.medium_jobs = [
+            "Spacecraft Systems Engineer",
+            "Orbital Mechanics Specialist",
+            "Mission Planning Coordinator",
+            "Space Research Scientist",
+            "Satellite Systems Engineer",
+            "Space Mission Analyst",
+            "Space Habitat Engineer",
+            "Spacecraft Pilot",
+            "Space Robotics Technician",
+            "Space Station Systems Engineer",
+            "Space Exploration Planner",
+            "Satellite Launch Coordinator",
+            "Astrobiologist",
+            "Space Communication Engineer",
+            "Spacecraft Flight Controller",
+            "Space Logistics Manager",
+            "Space Mission Specialist",
+            "Extravehicular Activity Coordinator",
+            "Orbital Debris Analyst",
+            "Space Operations Supervisor",
+            "Interplanetary Navigation Expert",
+            "Spacecraft Thermal Systems Engineer",
+            "Orbital Dynamics Specialist",
+            "Satellite Operations Engineer",
+            "Spacecraft Avionics Engineer",
+            "Space Research Coordinator",
+            "Mission Operations Manager",
+            "Spacecraft Propulsion Engineer",
+            "Satellite Communications Specialist",
+            "Space Systems Analyst",
+            "Space Habitat Systems Engineer",
+            "Orbital Flight Controller",
+            "Space Engineering Technician",
+            "Space Systems Designer",
+            "Satellite Integration Specialist",
+            "Space Mission Coordinator",
+            "Space Exploration Engineer",
+            "Orbital Mechanics Engineer",
+            "Space Research Analyst",
+            "Space Operations Engineer",
+            "Spacecraft Navigation Specialist",
+            "Space Mission Planner",
+            "Space Station Maintenance Engineer",
+            "Satellite Deployment Engineer",
+            "Space Habitat Designer",
+            "Spacecraft Systems Analyst",
+            "Orbital Logistics Specialist",
+            "Space Exploration Specialist",
+            "Satellite Monitoring Engineer",
+            "Spacecraft Engineering Specialist",
+            "Space Systems Manager",
+            "Space Mission Operations Manager",
+            "Orbital Debris Specialist",
+            "Space Research Engineer",
+            "Spacecraft Integration Engineer",
+            "Space Station Systems Analyst",
+            "Satellite Operations Manager",
+            "Space Exploration Manager",
+            "Space Mission Operations Specialist",
+            "Orbital Systems Specialist",
+            "Space Habitat Systems Specialist",
+            "Space Research Manager",
+            "Spacecraft Support Engineer",
+            "Space Mission Systems Engineer",
+            "Satellite Engineering Manager",
+            "Spacecraft Design Specialist",
+            "Orbital Navigation Engineer",
+            "Space Exploration Analyst",
+            "Spacecraft Maintenance Engineer",
+            "Space Systems Coordinator",
+            "Space Mission Support Engineer",
+            "Satellite Systems Specialist",
+            "Space Station Engineering Manager",
+            "Spacecraft Propulsion Specialist",
+            "Space Exploration Coordinator",
+            "Orbital Systems Manager",
+            "Spacecraft Systems Manager",
+            "Satellite Research Engineer",
+            "Space Mission Support Specialist",
+            "Space Habitat Researcher",
+            "Spacecraft Design Engineer",
+            "Space Systems Researcher",
+            "Orbital Operations Manager",
+            "Space Research Specialist",
+            "Spacecraft Integration Manager",
+            "Satellite Systems Manager",
+            "Space Mission Engineering Specialist",
+            "Space Exploration Director",
+            "Orbital Mechanics Analyst",
+            "Space Habitat Operations Specialist",
+            "Spacecraft Maintenance Specialist",
+            "Space Research Operations Manager",
+            "Space Mission Systems Analyst",
+            "Spacecraft Operations Engineer",
+            "Orbital Logistics Manager",
+            "Space Exploration Researcher"
+        ]
+
+        self.hard_jobs = [
+        "Chief Space Scientist",
+        "Space Mission Commander",
+        "Deep Space Navigator",
+        "Astrophysicist",
+        "Spacecraft Design Engineer",
+        "Space Program Director",
+        "Extraterrestrial Geologist",
+        "Space Technology Innovator",
+        "Space Habitat Architect",
+        "Space Exploration Chief",
+        "Spaceflight Safety Engineer",
+        "Orbital Dynamics Expert",
+        "Interstellar Research Leader",
+        "Spacecraft Propulsion Specialist",
+        "Space Mission Strategist",
+        "Space Station Operations Director",
+        "Space Robotics Lead Engineer",
+        "Advanced Propulsion Systems Engineer",
+        "Interplanetary Logistics Coordinator",
+        "Deep Space Communication Specialist",
+        "Chief Astronaut Trainer",
+        "Space Policy Advisor",
+        "Intergalactic Research Scientist",
+        "Space Mission Director",
+        "Advanced Space Systems Engineer",
+        "Deep Space Exploration Specialist",
+        "Chief Space Engineer",
+        "Space Innovation Strategist",
+        "Space Exploration Project Manager",
+        "Space Mission Systems Director",
+        "Astrobiology Research Director",
+        "Spacecraft Systems Director",
+        "Orbital Infrastructure Specialist",
+        "Interstellar Navigation Engineer",
+        "Space Science Director",
+        "Chief Orbital Scientist",
+        "Space Technology Development Manager",
+        "Space Habitat Engineering Director",
+        "Space Exploration Technology Specialist",
+        "Space Mission Coordination Director",
+        "Advanced Spacecraft Systems Analyst",
+        "Intergalactic Operations Manager",
+        "Space Research and Development Chief",
+        "Chief Space Operations Officer",
+        "Space Exploration Engineering Leader",
+        "Deep Space Research Manager",
+        "Space Systems Innovation Leader",
+        "Chief Spacecraft Engineer",
+        "Interstellar Engineering Specialist",
+        "Space Habitat Research Leader",
+        "Space Mission Research Director",
+        "Advanced Orbital Mechanics Specialist",
+        "Space Exploration Operations Chief",
+        "Chief Astronaut Mission Commander",
+        "Space Engineering Research Director",
+        "Spacecraft Systems Innovation Specialist",
+        "Interplanetary Mission Leader",
+        "Deep Space Systems Engineer",
+        "Space Exploration Research Lead",
+        "Space Technology Advancement Director",
+        "Orbital Dynamics Research Specialist",
+        "Chief Space Program Engineer",
+        "Space Mission Development Director",
+        "Advanced Space Systems Manager",
+        "Interstellar Spacecraft Engineer",
+        "Space Exploration Logistics Chief",
+        "Chief Space Operations Engineer",
+        "Space Habitat Design Director",
+        "Deep Space Mission Commander",
+        "Spacecraft Engineering Research Lead",
+        "Space Mission Technology Specialist",
+        "Intergalactic Systems Engineer",
+        "Advanced Space Exploration Manager",
+        "Space Technology Integration Specialist",
+        "Space Systems Research Director",
+        "Chief Orbital Research Engineer",
+        "Space Exploration Project Director",
+        "Space Mission Operations Lead",
+        "Advanced Space Mission Strategist",
+        "Interstellar Space Research Director",
+        "Chief Spacecraft Systems Engineer",
+        "Spacecraft Innovation Director",
+        "Deep Space Engineering Specialist",
+        "Space Systems Operations Director",
+        "Space Exploration Chief Engineer",
+        "Intergalactic Mission Specialist",
+        "Space Mission Systems Chief",
+        "Chief Space Technology Specialist",
+        "Advanced Orbital Engineering Director",
+        "Space Exploration Research Manager",
+        "Spacecraft Operations Director",
+        "Deep Space Research Specialist"
+        ]
 
     FIXED_COST_PER_WORKER = 10  # Fixed cost per worker
-
+    
     def expand_company(self):
         """Expand the company, increasing employee capacity and job difficulty."""
         if self.current_funds < self.expansion_cost:
@@ -1407,7 +1732,7 @@ class Company:
         
         # Increase expansion level and employee capacity
         self.expansion_level += 1
-        self.max_employee_population += 5  # Increase capacity by 5 for each expansion
+        # self.max_employee_population += 5  # Increase capacity by 5 for each expansion
         
         # Increase the expansion cost for future expansions
         self.expansion_cost = int(self.expansion_cost * 1.5)
@@ -1415,13 +1740,14 @@ class Company:
         # Update job difficulty
         self.update_job_difficulty()
         
-        print(f"Company expanded to level {self.expansion_level}. Max employees increased to {self.max_employee_population}.")
+        print(f"Company expanded to level {self.expansion_level}.") 
+            #   Max employees increased to {self.max_employee_population}.")
 
     def hire_workers(self, count):
         """Hire workers and handle the associated costs."""
-        if count + self.current_available_employee_count > self.max_employee_population:
-            print("No space for more employees.")
-            return
+        # if count + self.current_available_employee_count > self.max_employee_population:
+        #     print("No space for more employees.")
+        #     return
 
         total_cost = count * self.FIXED_COST_PER_WORKER       
         if total_cost > self.current_funds:
@@ -1433,29 +1759,33 @@ class Company:
         self.current_available_employee_count += count
         
         print(f"Hired {count} worker(s).")
-
+        
     def assign_workers_to_job(self, job_name, worker_count):
-        """Assign workers to a job and handle the associated costs."""
-        if job_name not in self.available_jobs:
-            print(f"Job '{job_name}' not found.")
-            return
-        
-        if worker_count > self.current_available_employee_count:
-            print("Not enough available employees.")
-            return
+            """Assign workers to a job and handle the associated costs, adding the job to the queue."""
+            if job_name not in self.available_jobs:
+                print(f"Job '{job_name}' not found.")
+                return
+            
+            if worker_count > self.current_available_employee_count:
+                print("Not enough available employees.")
+                return
 
-        job = self.available_jobs[job_name]
-        job["assigned_employee_count"] += worker_count
-        total_cost = worker_count * job["cost_per_worker"]
-        
-        if total_cost > self.current_funds:
-            print("Not enough funds to assign that many workers.")
-            job["assigned_employee_count"] -= worker_count
-            return
+            job = self.available_jobs[job_name]
+            total_cost = worker_count * job["cost_per_worker"]
+            
+            if total_cost > self.current_funds:
+                print("Not enough funds to assign that many workers.")
+                return
 
-        self.decrease_current_funds(total_cost)
-        self.current_available_employee_count -= worker_count
-        print(f"Assigned {worker_count} worker(s) to job '{job_name}'.")
+            # If all checks pass, assign the workers and update funds
+            job["assigned_employee_count"] += worker_count
+            self.decrease_current_funds(total_cost)
+            self.current_available_employee_count -= worker_count
+
+            # Queue the job for processing
+            self.queue_job(job_name)
+
+            print(f"Assigned {worker_count} worker(s) to job '{job_name}' and added it to the job queue.")
 
     def update_job_difficulty(self):
         """Update the difficulty of jobs based on the current expansion level."""
@@ -1467,11 +1797,12 @@ class Company:
         self.populate_jobs(num_easy=num_easy_jobs, num_medium=num_medium_jobs, num_hard=num_hard_jobs)
 
     def populate_jobs(self, num_easy=3, num_medium=3, num_hard=3):
-        """Populate jobs with a mix of difficulties."""
+        """Populate jobs with a mix of difficulties and rename based on difficulty."""
         self.available_jobs = {}
         
-        for i in range(num_easy):
-            job_name = f"EasyJob{chr(65 + i)}"
+        # Easy jobs
+        easy_job_names = random.sample(self.easy_jobs, min(num_easy, len(self.easy_jobs)))
+        for i, job_name in enumerate(easy_job_names):
             self.available_jobs[job_name] = {
                 "name": job_name,
                 "cost_per_worker": 10,
@@ -1483,8 +1814,9 @@ class Company:
                 "difficulty": "Easy",
             }
         
-        for i in range(num_medium):
-            job_name = f"MediumJob{chr(65 + i)}"
+        # Medium jobs
+        medium_job_names = random.sample(self.medium_jobs, min(num_medium, len(self.medium_jobs)))
+        for i, job_name in enumerate(medium_job_names):
             self.available_jobs[job_name] = {
                 "name": job_name,
                 "cost_per_worker": 20,
@@ -1496,8 +1828,9 @@ class Company:
                 "difficulty": "Medium",
             }
         
-        for i in range(num_hard):
-            job_name = f"HardJob{chr(65 + i)}"
+        # Hard jobs
+        hard_job_names = random.sample(self.hard_jobs, min(num_hard, len(self.hard_jobs)))
+        for i, job_name in enumerate(hard_job_names):
             self.available_jobs[job_name] = {
                 "name": job_name,
                 "cost_per_worker": 30,
@@ -1533,7 +1866,7 @@ class Company:
     def queue_job(self, job_name):
         """Queue a job for processing."""
         if job_name in self.available_jobs:
-            job_details = self.available_jobs.pop(job_name)
+            job_details = self.available_jobs[job_name]
             self.jobs_queue.append(job_details)
             print(f"Job '{job_name}' has been queued for processing.")
         else:
@@ -1594,9 +1927,9 @@ class Company:
 
     def hire_workers(self, count):
         """Hire workers and handle the associated costs."""
-        if count + self.current_available_employee_count > self.max_employee_population:
-            print("No space for more employees.")
-            return
+        # if count + self.current_available_employee_count > self.max_employee_population:
+        #     print("No space for more employees.")
+        #     return
 
         total_cost = count * self.FIXED_COST_PER_WORKER       
         if total_cost > self.current_funds:
@@ -1612,14 +1945,14 @@ class Company:
     def get_worker_cost(self):
         return self.FIXED_COST_PER_WORKER
     
-    def increase_max_employee_count(self, amount):
-        self.max_employee_population += amount 
+    # def increase_max_employee_count(self, amount):
+    #     self.max_employee_population += amount 
         
     def increase_available_employee_count(self, amount):
         self.current_available_employee_count += amount 
         
-    def decrease_max_employee_count(self, amount):
-        self.max_employee_population -= amount 
+    # def decrease_max_employee_count(self, amount):
+    #     self.max_employee_population -= amount 
         
     def decrease_available_employee_count(self, amount):
         self.current_available_employee_count -= amount 
@@ -1638,7 +1971,7 @@ class Company:
     
     def get_population_ratio(self):
         # Return a formatted string showing available employees over max population
-        return f"{self.current_available_employee_count}/{self.max_employee_population}"
+        return f"{self.current_available_employee_count}"
     
     def add_job(self, job_name, cost_per_worker, max_progress, reward, deadline):
         self.available_jobs[job_name] = {
@@ -1663,7 +1996,100 @@ class Company:
         """Determine if the game is over based on company status."""
         if self.current_funds <= 0:
             self.dead = True
-            print("Game Over: The company has run out of funds.")
+            
         elif self.failed_jobs > 0:
             self.dead = True
             print("Game Over: Too many failed jobs.")
+
+    def is_dead(self):
+        return self.dead
+    
+    def display_company_status(self):
+        """Display the current status of the company."""
+        print(f"Current Funds: ${self.current_funds}")
+        print(f"Available Employees: {self.current_available_employee_count}")
+
+        # Display status of jobs in the queue
+        if self.jobs_queue:
+            print("\nJobs in Queue:")
+            for job in self.jobs_queue:
+                print(f"  - {job['name']}: Progress {job['progress']}/{job['max_progress']}, "
+                      f"Deadline {job['deadline']}, Workers Assigned: {job['assigned_employee_count']}")
+        else:
+            print("\nNo jobs in the queue.")
+
+        # Display status of completed and failed jobs
+        print(f"\nCompleted Jobs: {self.completed_jobs}")
+        print(f"Failed Jobs: {self.failed_jobs}")
+
+        # Display status of available jobs
+        if self.available_jobs:
+            print("\nAvailable Jobs:")
+            for job_name, job in self.available_jobs.items():
+                print(f"  - {job_name}: Difficulty {job['difficulty']}, Reward ${job['reward']}, "
+                      f"Cost per Worker ${job['cost_per_worker']}, Deadline {job['deadline']}")
+        else:
+            print("\nNo available jobs at the moment.")
+            
+    def check_company_status(self):
+        """Check and update the current status of the company."""
+        if self.current_funds <= 0:
+            self.dead = True
+            print("Company is bankrupt!")
+            return
+
+        if self.jobs_queue:
+            # Process jobs in the queue
+            jobs_to_remove = []  # List to keep track of jobs that need to be removed
+
+            for job in self.jobs_queue:
+                job["progress"] += job["assigned_employee_count"]
+
+                if job["progress"] >= job["max_progress"]:
+                    # Job completed
+                    self.current_funds += job["reward"]
+                    self.completed_jobs += 1
+                    print(f"Job '{job['name']}' completed! Reward received: ${job['reward']}.")
+                    jobs_to_remove.append(job)
+                elif job["deadline"] <= 0:
+                    # Job missed deadline
+                    self.failed_jobs += 1
+                    print(f"Job '{job['name']}' missed its deadline.")
+                    jobs_to_remove.append(job)
+                else:
+                    # Update job deadline
+                    job["deadline"] -= 1
+
+            # Remove jobs that were completed or missed deadline
+            for job in jobs_to_remove:
+                self.jobs_queue.remove(job)
+        else:
+            print("No jobs to report.")
+
+        # Optionally, populate available jobs with new ones
+        self.populate_jobs(2, 1, 0)  # Adjust the numbers as needed
+
+
+
+        # if self.dead:
+        #     self.update_company_is_dead(True)
+        # else:
+        #     # display informationa bout selecting jobs 
+        #     if self.selected_jobs:
+        #         for job in self.selected_jobs:
+        #             if job['assigned_employee_count']:
+        #                 self.update_selected_job_progress(job['name'],job['assigned_employee_count'])
+        #             if job['progress'] >= job['max_progress']:
+        #                 self.increase_available_employee_count(job['assigned_employee_count'])
+        #                 self.increase_current_funds(job['reward'])
+        #                 self.completed_jobs += 1
+        #                 self.remove_selected_job(job['name'])
+        #             else:
+        #                 # will need to replace this magic number 
+        #                 self.update_selected_job_deadline(job['name'],1)
+        #             if job['deadline'] <= 0:
+        #                 print(f"Job '{job['name']}' has missed the deadline")
+        #                 self.failed_jobs += 1
+        #                 self.remove_selected_job(job['name'])
+        #     else:
+        #         print('No select jobs to report')

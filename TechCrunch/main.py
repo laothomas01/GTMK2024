@@ -504,8 +504,10 @@ def HUD_Display(company):
             "Main Menu:",
             "1) Hire Workers",
             "2) Assign Work",
-            "3) Expand Company",
-            "5) Exit"
+            "3) View Job Queue",
+            "4) Expand Company",
+            "5) Finish Turn",
+            "6) Exit"
         ]
         # Display the menu options
         
@@ -516,6 +518,7 @@ def HUD_Display(company):
         # Display the menu with a border and funding/population
 
         print_with_border(menu_options, width=50)
+    
 
 def main():
     # Create an instance of the Company with starting funds and employees
@@ -550,17 +553,47 @@ def main():
 
         action = int(input("Choose an option(1-5):\n"))
         clear_screen()
-        if action == 1: 
-            worker_count = int(input("Enter the number of workers:\n"))
+        if action == 1:  # Hire Workers
+            worker_count = int(input("Enter the number of workers to hire:\n"))
             company.hire_workers(worker_count)
-        elif action == 2:
-            pass
+
+        elif action == 2:  # Assign Work
+            job_names = company.display_available_jobs()  # Get job names with indices
+            job_index = int(input("Enter the number corresponding to the job:\n")) - 1  # Convert 1-based index to 0-based
+
+            if 0 <= job_index < len(job_names):
+                job_name = job_names[job_index]
+                worker_count = int(input(f"Enter the number of workers to assign to {job_name}:\n"))
+                company.assign_workers_to_job(job_name, worker_count)
+                company.queue_job(job_name)
+            else:
+                print("Invalid job number.")
+            clear_screen()
         elif action == 3:
-            pass
-        elif action == 5:
+            clear_screen()
+            company.display_queued_jobs()
+        elif action == 4:  # Expand Company
+            company.expand_company()
+        elif action == 5:  # Finish Turn
+            # company.finish_turn()  # Handles turn end operations and status checks
+            company.check_company_status()
+            company.display_company_status()
+            if company.is_dead():
+                clear_screen()
+                print(print_centered("Game Over: The company has run out of funds."))
+                break
+
+        elif action == 6:  # Exit
             print("Exiting game.")
             break
+        else:
+            print("Invalid option. Please choose a number between 1 and 6.")
+        
+        # Display updated HUD
         HUD_Display(company)
+
+    sys.exit()
+    
         
 if __name__ == "__main__":
     main()
