@@ -1052,54 +1052,416 @@
 #             print("Company is dead.")
 #         else:
 #             print(f"Current Funds: ${self.current_funds}")
-#             print(f"Available Employees: {self.current_available_employee_count}/{self.max_employee_count}")
+#             print(f"Available Employees: {self.current_available_employee_count}/{self.max_employee_population}")
 #             print(f"Completed Jobs: {self.completed_jobs}")
 #             print(f"Failed Jobs: {self.failed_jobs}")
 #             self.display_available_jobs()
 #             self.display_queued_jobs()
     
-#     def get_available_jobs(self):
-#         return self.available_jobs
+# #     def get_available_jobs(self):
+# #         return self.available_jobs
 
+
+
+# import random
+# from tabulate import tabulate
+
+# """
+
+# player will get supply capped and fked over if they dont prioritze their funds 
+
+# """
+# class Company:
+#     def __init__(self, starting_funds, starting_employee_count):
+#         self.current_funds = starting_funds
+#         self.max_employee_population = 5
+#         self.current_available_employee_count = starting_employee_count
+#         self.completed_jobs = 0
+#         self.failed_jobs = 0
+#         self.available_jobs = {}
+#         self.jobs_queue = []
+#         self.dead = False
+#         self.expansion_level = 1  # Tracks the company's expansion level
+
+#     FIXED_COST_PER_WORKER = 50  # Fixed cost per worker
+
+# # should bring in new features when expansion happens 
+#     def expand_company(self):
+#         self.expansion_level += 1
+#         self.update_job_difficulty()
+
+#     def get_funds(self):
+#         return self.current_funds
+#     def get_max_employee_population(self):
+#         return self.max_employee_count
+#     def get_available_employee_count(self):
+#         return self.employee_count
+    
+#     def update_job_difficulty(self):
+#         """Update the difficulty of jobs based on the current quarter."""
+#         total_jobs = len(self.available_jobs)
+#         num_easy_jobs = max(1, int(total_jobs * max(0.1, 0.5 - 0.05 * (self.current_quarter - 1))))
+#         num_medium_jobs = max(1, int(total_jobs * max(0.3, 0.4 - 0.03 * (self.current_quarter - 1))))
+#         num_hard_jobs = max(1, total_jobs - num_easy_jobs - num_medium_jobs)
+        
+#         self.populate_jobs(num_easy=num_easy_jobs, num_medium=num_medium_jobs, num_hard=num_hard_jobs)
+
+#     def populate_jobs(self, num_easy=3, num_medium=3, num_hard=3):
+#         """Populate jobs with a mix of difficulties."""
+#         self.available_jobs = {}
+        
+#         for i in range(num_easy):
+#             job_name = f"EasyJob{chr(65 + i)}"
+#             self.available_jobs[job_name] = {
+#                 "name": job_name,
+#                 "cost_per_worker": 10,
+#                 "progress": 0,
+#                 "max_progress": 5,
+#                 "assigned_employee_count": 0,
+#                 "deadline": 10,
+#                 "reward": 100,
+#                 "difficulty": "Easy",
+#             }
+        
+#         for i in range(num_medium):
+#             job_name = f"MediumJob{chr(65 + i)}"
+#             self.available_jobs[job_name] = {
+#                 "name": job_name,
+#                 "cost_per_worker": 20,
+#                 "progress": 0,
+#                 "max_progress": 10,
+#                 "assigned_employee_count": 0,
+#                 "deadline": 8,
+#                 "reward": 200,
+#                 "difficulty": "Medium",
+#             }
+        
+#         for i in range(num_hard):
+#             job_name = f"HardJob{chr(65 + i)}"
+#             self.available_jobs[job_name] = {
+#                 "name": job_name,
+#                 "cost_per_worker": 30,
+#                 "progress": 0,
+#                 "max_progress": 15,
+#                 "assigned_employee_count": 0,
+#                 "deadline": 6,
+#                 "reward": 300,
+#                 "difficulty": "Hard",
+#             }
+
+#     def get_random_job(self, difficulty):
+#         """Get a random job based on difficulty."""
+#         jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == difficulty]
+#         if jobs:
+#             return random.choice(jobs)
+#         return None
+    
+#     def display_queued_jobs(self):
+#         """Display the jobs currently in the queue in a tabular format."""
+#         if not self.jobs_queue:
+#             print("No jobs in the queue.")
+#             return
+
+#         # Prepare data for tabulation
+#         table_data = []
+#         headers = ["Job Name", "Deadline", "Progress", "Assigned Employees"]
+
+#         for job in self.jobs_queue:
+#             row = [
+#                 job['name'],
+#                 job['deadline'],
+#                 job['progress'],
+#                 job['assigned_employee_count']
+#             ]
+#             table_data.append(row)
+
+#         # Print the table
+#         print("Jobs in Queue:")
+#         print(tabulate(table_data, headers=headers, tablefmt="grid"))
+
+#     def queue_job(self, job_name):
+#         """Queue a job for processing."""
+#         if job_name in self.available_jobs:
+#             job_details = self.available_jobs.pop(job_name)
+#             self.jobs_queue.append(job_details)
+#             print(f"Job '{job_name}' has been queued for processing.")
+#         else:
+#             print(f"Job '{job_name}' is not available.")
+        
+#     def display_available_jobs(self):
+#         """Display all available jobs."""
+#         if not self.available_jobs:
+#             print("No available jobs.")
+#         else:
+#             headers = ["Job Name", "Difficulty", "Cost/Worker", "Progress", "Max Progress", "Reward", "Deadline"]
+#             table_data = []
+            
+#             for job_name, job_details in self.available_jobs.items():
+#                 row = [
+#                     job_name,
+#                     job_details["difficulty"],
+#                     job_details["cost_per_worker"],
+#                     job_details["progress"],
+#                     job_details["max_progress"],
+#                     job_details["reward"],
+#                     job_details["deadline"]
+#                 ]
+#                 table_data.append(row)
+                
+#             print("Available Jobs:")
+#             print(tabulate(table_data, headers=headers, tablefmt="grid"))
+
+#     def display_available_jobs(self):
+#         """Display all available jobs with numbers for user selection and return an array of job names."""
+#         job_names = []
+        
+#         if not self.available_jobs:
+#             print("No available jobs.")
+#             return job_names
+        
+#         headers = ["#", "Job Name", "Difficulty", "Cost/Worker", "Progress", "Max Progress", "Reward", "Deadline"]
+#         table_data = []
+        
+#         for index, (job_name, job_details) in enumerate(self.available_jobs.items(), start=1):
+#             row = [
+#                 index,  # Display job number
+#                 job_name,
+#                 job_details["difficulty"],
+#                 job_details["cost_per_worker"],
+#                 job_details["progress"],
+#                 job_details["max_progress"],
+#                 job_details["reward"],
+#                 job_details["deadline"]
+#             ]
+#             table_data.append(row)
+#             job_names.append(job_name)  # Collect job names
+        
+#         print("Available Jobs:")
+#         print(tabulate(table_data, headers=headers, tablefmt="grid"))
+
+#         return job_names
+
+
+
+#     def assign_workers_to_job(self, job_name, worker_count):
+#         """Assign workers to a job and handle the associated costs."""
+#         if job_name not in self.available_jobs:
+#             print(f"Job '{job_name}' not found.")
+#             return
+#         job = self.available_jobs[job_name]
+        
+#         if worker_count >= self.employee_count:
+#             worker_count = self.employee_count
+#         job["assigned_employee_count"] += worker_count
+#         total_cost = worker_count * job["cost_per_worker"]
+#         self.decrease_current_funds(total_cost)
+#         self.decrease_available_employee_count(worker_count)
+
+#     def hire_workers(self, count):
+#         """Hire workers and handle the associated costs."""
+#         total_cost = count * self.FIXED_COST_PER_WORKER       
+#         self.decrease_current_funds(total_cost)
+#         self.increase_max_employee_count(count)
+#         self.increase_available_employee_count(count)
+#         self.decrease_current_funds(total_cost)
+#         if count > 1:
+#             print(f"Hired {count} workers.")
+#         else:
+#             print(f"Hired {count} worker.")
+
+#          # if total_cost > self.current_funds:
+#         #     print("Not enough funds to hire that many workers.")
+#         # else:
+#         #     self.increase_max_employee_count(count)
+#         #     self.increase_available_employee_count(count)
+#         #     self.decrease_current_funds(total_cost)
+#         #     print(f"Hired {count} workers.")
+        
+#         # if total_cost > self.current_funds:
+#         #     print("Not enough funds to hire that many workers.")
+#         # else:
+#         #     self.increase_max_employee_count(count)
+#         #     self.increase_available_employee_count(count)
+#         #     self.decrease_current_funds(total_cost)
+#         #     print(f"Hired {count} workers.")
+
+#     def get_worker_cost(self):
+#         return self.FIXED_COST_PER_WORKER
+    
+#     def increase_max_employee_count(self, amount):
+#         self.max_employee_count += amount 
+        
+#     def increase_available_employee_count(self, amount):
+#         self.employee_count += amount 
+        
+#     def decrease_max_employee_count(self, amount):
+#         self.max_employee_count -= amount 
+        
+#     def decrease_available_employee_count(self, amount):
+#         self.employee_count -= amount 
+    
+#     def increase_current_funds(self, amount):
+#         self.current_funds += amount
+
+#     def decrease_current_funds(self, amount):
+#         self.current_funds -= amount 
+
+#     def update_current_funds(self, amount):
+#         self.current_funds = amount 
+    
+#     def update_company_is_dead(self, is_dead):
+#         self.dead = is_dead
+    
+#     def is_dead(self):
+#         return self.dead 
+    
+#     def check_company_status(self):
+#         if self.current_funds <= 0:
+#             self.dead = True 
+#             print("The company is dead.")
+#         else:
+#             for job in self.jobs_queue[:]:
+#                 if job["assigned_employee_count"]:
+#                     job["progress"] += job["assigned_employee_count"]
+                    
+#                     if job["progress"] > job["max_progress"]:
+#                         job["progress"] = job["max_progress"]
+                    
+#                     if job["progress"] >= job["max_progress"]:
+#                         self.increase_available_employee_count(job["assigned_employee_count"])
+#                         self.increase_current_funds(job["reward"])
+#                         self.completed_jobs += 1
+#                         self.jobs_queue.remove(job)
+#                         print(f"Job '{job['name']}' completed.")
+#                     else:
+#                         job["deadline"] -= 1
+#                         if job["deadline"] <= 0:
+#                             print(f"Job '{job['name']}' has missed the deadline.")
+#                             self.failed_jobs += 1
+#                             self.jobs_queue.remove(job)
+
+#     def print_status_report(self):
+#         """Print the status report of the company."""
+#         if self.current_funds < 0:
+#             print(f"Current Funds: -${self.current_funds}")
+#         else:
+#             print(f"Current Funds: ${self.current_funds}")
+            
+#         print(f"Current Max Employee Count: {self.max_employee_count}")
+#         print(f"Current Available Employee Count: {self.employee_count}")
+#         print(f"Total Number of Jobs Completed: {self.completed_jobs}")
+#         print(f"Total Number of Jobs Failed: {self.failed_jobs}")
+#         self.display_queued_jobs()
+
+#     def find_easy_jobs(self, count=3):
+#         """Find and return a specified number of easy jobs from available jobs."""
+#         easy_jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == "Easy"]
+#         if len(easy_jobs) < count:
+#             count = len(easy_jobs)
+#         selected_easy_jobs = random.sample(easy_jobs, count) if easy_jobs else []
+#         return selected_easy_jobs
+
+#     def find_medium_jobs(self, count=3):
+#         """Find and return a specified number of medium jobs from available jobs."""
+#         medium_jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == "Medium"]
+#         if len(medium_jobs) < count:
+#             count = len(medium_jobs)
+#         selected_medium_jobs = random.sample(medium_jobs, count) if medium_jobs else []
+#         return selected_medium_jobs
+
+#     def find_hard_jobs(self, count=3):
+#         """Find and return a specified number of hard jobs from available jobs."""
+#         hard_jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == "Hard"]
+#         if len(hard_jobs) < count:
+#             count = len(hard_jobs)
+#         selected_hard_jobs = random.sample(hard_jobs, count) if hard_jobs else []
+#         return selected_hard_jobs
 
 
 import random
 from tabulate import tabulate
 
 class Company:
-    def __init__(self, starting_funds, starting_employee_count):
+    def __init__(self, starting_funds, starting_employee_count,max_population):
         self.current_funds = starting_funds
-        self.max_employee_count = starting_employee_count
-        self.current_available_employee_count = self.max_employee_count
+        self.max_employee_population = max_population
+        self.current_available_employee_count = starting_employee_count
         self.completed_jobs = 0
         self.failed_jobs = 0
         self.available_jobs = {}
         self.jobs_queue = []
         self.dead = False
-        self.current_quarter = 1
+        self.expansion_level = 1  # Tracks the company's expansion level
+        self.expansion_cost = 500  # Base cost for expanding the company
 
-    FIXED_COST_PER_WORKER = 50  # Fixed cost per worker
+    FIXED_COST_PER_WORKER = 10  # Fixed cost per worker
 
-    def get_quarter(self):
-        return self.current_quarter
-    
-    def advance_quarter(self):
-        """Advance to the next quarter and adjust job difficulty."""
-        self.current_quarter += 1
+    def expand_company(self):
+        """Expand the company, increasing employee capacity and job difficulty."""
+        if self.current_funds < self.expansion_cost:
+            print("Not enough funds to expand the company.")
+            return
+        
+        # Deduct the expansion cost
+        self.decrease_current_funds(self.expansion_cost)
+        
+        # Increase expansion level and employee capacity
+        self.expansion_level += 1
+        self.max_employee_population += 5  # Increase capacity by 5 for each expansion
+        
+        # Increase the expansion cost for future expansions
+        self.expansion_cost = int(self.expansion_cost * 1.5)
+        
+        # Update job difficulty
         self.update_job_difficulty()
+        
+        print(f"Company expanded to level {self.expansion_level}. Max employees increased to {self.max_employee_population}.")
 
-    def get_funds(self):
-        return self.current_funds
-    def get_max_employee_count(self):
-        return self.max_employee_count
-    def get_available_employee_count(self):
-        return self.current_available_employee_count
-    
+    def hire_workers(self, count):
+        """Hire workers and handle the associated costs."""
+        if count + self.current_available_employee_count > self.max_employee_population:
+            print("No space for more employees.")
+            return
+
+        total_cost = count * self.FIXED_COST_PER_WORKER       
+        if total_cost > self.current_funds:
+            print("Not enough funds to hire that many workers.")
+            return
+        
+        # Deduct cost and update employee counts
+        self.decrease_current_funds(total_cost)
+        self.current_available_employee_count += count
+        
+        print(f"Hired {count} worker(s).")
+
+    def assign_workers_to_job(self, job_name, worker_count):
+        """Assign workers to a job and handle the associated costs."""
+        if job_name not in self.available_jobs:
+            print(f"Job '{job_name}' not found.")
+            return
+        
+        if worker_count > self.current_available_employee_count:
+            print("Not enough available employees.")
+            return
+
+        job = self.available_jobs[job_name]
+        job["assigned_employee_count"] += worker_count
+        total_cost = worker_count * job["cost_per_worker"]
+        
+        if total_cost > self.current_funds:
+            print("Not enough funds to assign that many workers.")
+            job["assigned_employee_count"] -= worker_count
+            return
+
+        self.decrease_current_funds(total_cost)
+        self.current_available_employee_count -= worker_count
+        print(f"Assigned {worker_count} worker(s) to job '{job_name}'.")
+
     def update_job_difficulty(self):
-        """Update the difficulty of jobs based on the current quarter."""
+        """Update the difficulty of jobs based on the current expansion level."""
         total_jobs = len(self.available_jobs)
-        num_easy_jobs = max(1, int(total_jobs * max(0.1, 0.5 - 0.05 * (self.current_quarter - 1))))
-        num_medium_jobs = max(1, int(total_jobs * max(0.3, 0.4 - 0.03 * (self.current_quarter - 1))))
+        num_easy_jobs = max(1, int(total_jobs * max(0.1, 0.5 - 0.05 * (self.expansion_level - 1))))
+        num_medium_jobs = max(1, int(total_jobs * max(0.3, 0.4 - 0.03 * (self.expansion_level - 1))))
         num_hard_jobs = max(1, total_jobs - num_easy_jobs - num_medium_jobs)
         
         self.populate_jobs(num_easy=num_easy_jobs, num_medium=num_medium_jobs, num_hard=num_hard_jobs)
@@ -1147,20 +1509,12 @@ class Company:
                 "difficulty": "Hard",
             }
 
-    def get_random_job(self, difficulty):
-        """Get a random job based on difficulty."""
-        jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == difficulty]
-        if jobs:
-            return random.choice(jobs)
-        return None
-    
     def display_queued_jobs(self):
         """Display the jobs currently in the queue in a tabular format."""
         if not self.jobs_queue:
             print("No jobs in the queue.")
             return
 
-        # Prepare data for tabulation
         table_data = []
         headers = ["Job Name", "Deadline", "Progress", "Assigned Employees"]
 
@@ -1173,7 +1527,6 @@ class Company:
             ]
             table_data.append(row)
 
-        # Print the table
         print("Jobs in Queue:")
         print(tabulate(table_data, headers=headers, tablefmt="grid"))
 
@@ -1187,69 +1540,86 @@ class Company:
             print(f"Job '{job_name}' is not available.")
         
     def display_available_jobs(self):
-        """Display all available jobs."""
+        """Display all available jobs with numbers for user selection and return an array of job names."""
+        job_names = []
+        
         if not self.available_jobs:
             print("No available jobs.")
-        else:
-            headers = ["Job Name", "Difficulty", "Cost/Worker", "Progress", "Max Progress", "Reward", "Deadline"]
-            table_data = []
-            
-            for job_name, job_details in self.available_jobs.items():
-                row = [
-                    job_name,
-                    job_details["difficulty"],
-                    job_details["cost_per_worker"],
-                    job_details["progress"],
-                    job_details["max_progress"],
-                    job_details["reward"],
-                    job_details["deadline"]
-                ]
-                table_data.append(row)
-                
-            print("Available Jobs:")
-            print(tabulate(table_data, headers=headers, tablefmt="grid"))
-    
+            return job_names
+        
+        headers = ["#", "Job Name", "Difficulty", "Cost/Worker", "Progress", "Max Progress", "Reward", "Deadline"]
+        table_data = []
+        
+        for index, (job_name, job_details) in enumerate(self.available_jobs.items(), start=1):
+            row = [
+                index,  # Display job number
+                job_name,
+                job_details["difficulty"],
+                job_details["cost_per_worker"],
+                job_details["progress"],
+                job_details["max_progress"],
+                job_details["reward"],
+                job_details["deadline"]
+            ]
+            table_data.append(row)
+            job_names.append(job_name)  # Collect job names
+        
+        print("Available Jobs:")
+        print(tabulate(table_data, headers=headers, tablefmt="grid"))
+
+        return job_names
+
     def assign_workers_to_job(self, job_name, worker_count):
         """Assign workers to a job and handle the associated costs."""
         if job_name not in self.available_jobs:
             print(f"Job '{job_name}' not found.")
             return
         
+        if worker_count > self.current_available_employee_count:
+            print("Not enough available employees.")
+            return
+
         job = self.available_jobs[job_name]
+        job["assigned_employee_count"] += worker_count
         total_cost = worker_count * job["cost_per_worker"]
         
         if total_cost > self.current_funds:
             print("Not enough funds to assign that many workers.")
-        elif worker_count > self.current_available_employee_count:
-            print("Not enough available workers.")
-        else:
-            job["assigned_employee_count"] += worker_count
-            self.decrease_current_funds(total_cost)
-            self.decrease_available_employee_count(worker_count)
-            print(f"Assigned {worker_count} workers to job '{job_name}'.")
+            job["assigned_employee_count"] -= worker_count
+            return
+
+        self.decrease_current_funds(total_cost)
+        self.current_available_employee_count -= worker_count
+        print(f"Assigned {worker_count} worker(s) to job '{job_name}'.")
 
     def hire_workers(self, count):
         """Hire workers and handle the associated costs."""
-        total_cost = count * self.FIXED_COST_PER_WORKER
+        if count + self.current_available_employee_count > self.max_employee_population:
+            print("No space for more employees.")
+            return
+
+        total_cost = count * self.FIXED_COST_PER_WORKER       
         if total_cost > self.current_funds:
             print("Not enough funds to hire that many workers.")
-        else:
-            self.increase_max_employee_count(count)
-            self.increase_available_employee_count(count)
-            self.decrease_current_funds(total_cost)
-            print(f"Hired {count} workers.")
+            return
+        
+        # Deduct cost and update employee counts
+        self.decrease_current_funds(total_cost)
+        self.current_available_employee_count += count
+        
+        print(f"Hired {count} worker(s).")
 
     def get_worker_cost(self):
         return self.FIXED_COST_PER_WORKER
     
     def increase_max_employee_count(self, amount):
-        self.max_employee_count += amount 
+        self.max_employee_population += amount 
         
     def increase_available_employee_count(self, amount):
         self.current_available_employee_count += amount 
         
     def decrease_max_employee_count(self, amount):
-        self.max_employee_count -= amount 
+        self.max_employee_population -= amount 
         
     def decrease_available_employee_count(self, amount):
         self.current_available_employee_count -= amount 
@@ -1261,67 +1631,39 @@ class Company:
         self.current_funds -= amount 
 
     def update_current_funds(self, amount):
-        self.current_funds = amount 
+        self.current_funds = amount
+
+    def get_current_funds(self):
+        return self.current_funds
     
-    def update_company_is_dead(self, is_dead):
-        self.dead = is_dead
+    def get_population_ratio(self):
+        # Return a formatted string showing available employees over max population
+        return f"{self.current_available_employee_count}/{self.max_employee_population}"
     
-    def is_dead(self):
-        return self.dead 
-    
-    def check_company_status(self):
-        if self.dead:
-            print("The company is dead.")
-        else:
-            for job in self.jobs_queue[:]:
-                if job["assigned_employee_count"]:
-                    job["progress"] += job["assigned_employee_count"]
-                    
-                    if job["progress"] > job["max_progress"]:
-                        job["progress"] = job["max_progress"]
-                    
-                    if job["progress"] >= job["max_progress"]:
-                        self.increase_available_employee_count(job["assigned_employee_count"])
-                        self.increase_current_funds(job["reward"])
-                        self.completed_jobs += 1
-                        self.jobs_queue.remove(job)
-                        print(f"Job '{job['name']}' completed.")
-                    else:
-                        job["deadline"] -= 1
-                        if job["deadline"] <= 0:
-                            print(f"Job '{job['name']}' has missed the deadline.")
-                            self.failed_jobs += 1
-                            self.jobs_queue.remove(job)
+    def add_job(self, job_name, cost_per_worker, max_progress, reward, deadline):
+        self.available_jobs[job_name] = {
+            "name": job_name,
+            "cost_per_worker": cost_per_worker,
+            "progress": 0,
+            "max_progress": max_progress,
+            "assigned_employee_count": 0,
+            "deadline": deadline,
+            "reward": reward
+        }
 
-    def print_status_report(self):
-        """Print the status report of the company."""
-        print(f"Current Funds: ${self.current_funds}")
-        print(f"Current Max Employee Count: {self.max_employee_count}")
-        print(f"Current Available Employee Count: {self.current_available_employee_count}")
-        print(f"Total Number of Jobs Completed: {self.completed_jobs}")
-        print(f"Total Number of Jobs Failed: {self.failed_jobs}")
-        self.display_queued_jobs()
+    def handle_failed_jobs(self):
+        """Handle failed jobs due to missing deadlines or other reasons."""
+        for job in self.jobs_queue:
+            if job["progress"] < job["max_progress"]:
+                self.failed_jobs += 1
+                print(f"Job '{job['name']}' failed due to unmet deadline.")
+        self.jobs_queue = [job for job in self.jobs_queue if job["progress"] >= job["max_progress"]]
 
-    def find_easy_jobs(self, count=3):
-        """Find and return a specified number of easy jobs from available jobs."""
-        easy_jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == "Easy"]
-        if len(easy_jobs) < count:
-            count = len(easy_jobs)
-        selected_easy_jobs = random.sample(easy_jobs, count) if easy_jobs else []
-        return selected_easy_jobs
-
-    def find_medium_jobs(self, count=3):
-        """Find and return a specified number of medium jobs from available jobs."""
-        medium_jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == "Medium"]
-        if len(medium_jobs) < count:
-            count = len(medium_jobs)
-        selected_medium_jobs = random.sample(medium_jobs, count) if medium_jobs else []
-        return selected_medium_jobs
-
-    def find_hard_jobs(self, count=3):
-        """Find and return a specified number of hard jobs from available jobs."""
-        hard_jobs = [job_name for job_name, details in self.available_jobs.items() if details["difficulty"] == "Hard"]
-        if len(hard_jobs) < count:
-            count = len(hard_jobs)
-        selected_hard_jobs = random.sample(hard_jobs, count) if hard_jobs else []
-        return selected_hard_jobs
+    def game_over(self):
+        """Determine if the game is over based on company status."""
+        if self.current_funds <= 0:
+            self.dead = True
+            print("Game Over: The company has run out of funds.")
+        elif self.failed_jobs > 0:
+            self.dead = True
+            print("Game Over: Too many failed jobs.")
